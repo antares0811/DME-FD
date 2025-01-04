@@ -1,0 +1,62 @@
+device: 'cuda'
+seed: 1
+# True only train, test one batch
+debug: False
+data:
+  name: 'isic2018'
+  train_folder: 'data/isic2018/'
+  val_folder: 'data/isic2018/'
+  test_folder: 'data/isic2018/'
+  save_folder: 'checkpoints/isic2018'
+  supervised_ratio: 0.04
+  train_aug: True
+  img_size: 224
+semi:
+  conf_thresh: 0.85
+train:
+  l_batchsize: 8
+  u_batchsize: 8
+  num_workers: 0
+  num_epochs: 80
+  num_iters: False # num of updating for each epoch
+  # batch_size uses args to define
+  optimizer:
+    mode: 'adamw'
+    adamw:
+      lr: '1e-4'
+      betas: 
+        - 0.9
+        - 0.999
+      eps: '1e-8'
+      weight_decay: 0.05
+    adam:
+      lr: '1e-4'
+      betas:
+        - 0.9
+        - 0.999
+test:
+  only_test: False  # if True, only do test
+  test_model_dir: ''
+  num_workers: 0
+  batch_size: 5
+# model uses args to define
+# resnet[18,34,50,101]
+model_encoder_id: 0
+model_adapt:
+  # MLP  AdaptFormer
+  adapt_method: False
+  num_domains: 1
+
+swin:
+  # name: 'swin_base_patch4_window7_224_in22k'
+  # DROP_PATH_RATE: 0.2
+  # EMBED_DIM: 128
+  # DEPTHS: [ 2, 2, 18, 2 ]
+  # NUM_HEADS: [ 4, 8, 16, 32 ]
+  # WINDOW_SIZE: 7
+  name: 'swin_large_patch4_window7_224_22k'
+  DROP_PATH_RATE: 0.2
+  EMBED_DIM: 192
+  DEPTHS: [2,2,18] #[ 2, 2, 18, 2 ]
+  NUM_HEADS: [6,12,24] #[ 4, 8, 16, 32 ]
+  WINDOW_SIZE: 7 
